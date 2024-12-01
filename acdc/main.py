@@ -145,7 +145,7 @@ torch.autograd.set_grad_enabled(False)
 parser = argparse.ArgumentParser(description="Used to launch ACDC runs. Only task and threshold are required")
 
 
-task_choices = ['ioi', 'docstring', 'induction', 'tracr-reverse', 'tracr-proportion', 'greaterthan', 'or_gate']
+task_choices = ['ioi', 'docstring', 'induction', 'tracr-reverse', 'tracr-proportion', 'greaterthan', 'or_gate', 'iterate']
 parser.add_argument('--task', type=str, required=True, choices=task_choices, help=f'Choose a task from the available options: {task_choices}')
 parser.add_argument('--threshold', type=float, required=True, help='Value for THRESHOLD')
 parser.add_argument('--first-cache-cpu', type=str, required=False, default="True", help='Value for FIRST_CACHE_CPU (the old name for the `online_cache`)')
@@ -277,6 +277,11 @@ elif TASK == "docstring":
         correct_incorrect_wandb=True,
     )
 elif TASK == "greaterthan":
+    num_examples = 100
+    things = get_all_greaterthan_things(
+        num_examples=num_examples, metric_name=args.metric, device=DEVICE
+    )
+elif TASK == "iterate":
     num_examples = 100
     things = get_all_greaterthan_things(
         num_examples=num_examples, metric_name=args.metric, device=DEVICE
