@@ -131,6 +131,9 @@ from acdc.acdc_graphics import (
     build_colorscheme,
     show
 )
+
+from acdc.iterate.utils import get_all_iterate_things
+
 import argparse
 
 torch.autograd.set_grad_enabled(False)
@@ -283,8 +286,8 @@ elif TASK == "greaterthan":
     )
 elif TASK == "iterate":
     num_examples = 100
-    things = get_all_greaterthan_things(
-        num_examples=num_examples, metric_name=args.metric, device=DEVICE
+    things = get_all_iterate_things(
+        num_samples=num_examples, device=DEVICE
     )
 else:
     raise ValueError(f"Unknown task {TASK}")
@@ -368,6 +371,7 @@ import datetime
 exp_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
 for i in range(args.max_num_epochs):
+    print('>>> Iteration',i)
     exp.step(testing=False)
 
     show(
