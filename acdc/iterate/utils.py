@@ -91,8 +91,10 @@ def generate_corrupted_samples(num_samples):
 KEYWORD = 'for'
 
 
-def get_all_iterate_things(num_samples: int, device):
+def get_all_iterate_things(num_samples: int, device = None):
     random.seed(0)
+    if device is None:
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
     tl_model = get_iterate_model(device)
     data = generate_samples(num_samples * 2)
     patch_data = generate_corrupted_samples(num_samples * 2)
@@ -165,8 +167,14 @@ def get_all_iterate_things(num_samples: int, device):
     #     test_patch_data=data.clone(),
     # )
 
+def save_final_logits():
+    things = get_all_iterate_things(1000)
+    torch.save(things.validation_data, 'val_dataset.pt')
+    torch.save(things.validation_patch_data, 'val_patch_dataset.pt')
+
 
 
 if __name__ == '__main__':
-    things = get_all_iterate_things(1000, 'cuda')
+    #things = get_all_iterate_things(1000, 'cuda')
+    save_final_logits()
     
